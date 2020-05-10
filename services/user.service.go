@@ -19,7 +19,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if result != true {
 		w.WriteHeader(http.StatusInternalServerError)
 		io.WriteString(w, `{ "code": 1, "message": "Internal Server Error" }`)
+	} else {
+		w.WriteHeader(http.StatusCreated)
+		io.WriteString(w, `{ "success": true, "message": "User created" }`)
 	}
-	w.WriteHeader(http.StatusCreated)
-	io.WriteString(w, `{ "success": true, "message": "User created" }`)
 }
