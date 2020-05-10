@@ -6,7 +6,7 @@ import (
 )
 
 // CreateUser inserts a new user into database
-func CreateUser(user models.User) {
+func CreateUser(user models.User) bool {
 	db := dbConn.CreateDatabaseConnection()
 	stmt, err := db.Prepare("INSERT INTO users(name, email, password) VALUES(?,?,?)")
 	if err != nil {
@@ -16,4 +16,6 @@ func CreateUser(user models.User) {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	return true
 }

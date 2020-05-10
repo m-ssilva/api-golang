@@ -8,7 +8,7 @@ import (
 )
 
 // CreateUser parse body information into user model and call repository layer
-func CreateUser(body []byte) func {
+func CreateUser(body []byte) bool {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
