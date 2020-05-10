@@ -1,6 +1,7 @@
 package services
 
 import (
+	"io"
 	"io/ioutil"
 	"net/http"
 
@@ -14,5 +15,11 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	lib.CreateUser(body)
+	_, err = lib.CreateUser(body)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+		io.WriteString(w, `{ "code": 1, "message": "Internal Server Error" }`)
+	}
+	w.WriteHeader(http.StatusCreated)
+	io.WriteString(w, `{ "success": true, "message": "User created" }`)
 }
