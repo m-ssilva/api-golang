@@ -15,8 +15,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	_, err = lib.CreateUser(body)
-	if err != nil {
+	result := lib.CreateUser(body)
+	if result != true {
 		w.WriteHeader(http.StatusInternalServerError)
 		io.WriteString(w, `{ "code": 1, "message": "Internal Server Error" }`)
 	}
