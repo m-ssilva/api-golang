@@ -14,7 +14,7 @@ func CreateUser(user models.User) bool {
 	}
 	_, err = stmt.Exec(user.Name, user.Email, user.Password)
 	if err != nil {
-		panic(err.Error())
+		return false
 	}
 
 	return true
