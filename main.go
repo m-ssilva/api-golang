@@ -9,11 +9,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Starting...")
+	fmt.Println("Starting API...")
 	router := mux.NewRouter()
 
 	router.HandleFunc("/register", services.CreateUser).Methods("POST")
 	http.ListenAndServe(":8000", router)
-
-	fmt.Println("API is running on port 8000")
 }

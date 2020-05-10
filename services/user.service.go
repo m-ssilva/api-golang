@@ -1,6 +1,7 @@
 package services
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 
@@ -13,6 +14,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		panic(err.Error())
 	}
+
+	fmt.Println("Sending body to lib layer")
 
 	lib.CreateUser(body)
 }
