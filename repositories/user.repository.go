@@ -17,6 +17,11 @@ func CreateUser(user models.User) {
 		panic(err.Error())
 	}
 
-	fmt.Println("Inserting into database")
-	stmt.Exec(user.Name, user.Email, user.Password)
+	fmt.Println("Inserting into database...")
+	_, err = stmt.Exec(user.Name, user.Email, user.Password)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	fmt.Println("User inserted into database")
 }
