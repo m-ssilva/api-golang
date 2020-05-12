@@ -5,17 +5,21 @@ import (
 	models "github.com/m-ssilva/api-golang/models"
 )
 
-// CreateUser inserts a new user into database
-func CreateUser(user models.User) bool {
-	db := dbConn.CreateDatabaseConnection()
-	stmt, err := db.Prepare("INSERT INTO users(name, email, password) VALUES(?,?,?)")
-	if err != nil {
-		panic(err.Error())
-	}
-	_, err = stmt.Exec(user.Name, user.Email, user.Password)
-	if err != nil {
-		return false
-	}
+var db = dbConn.CreateDatabaseConnection()
 
-	return true
+// CreateUser inserts a new user into database
+func CreateUser(user models.User) (bool, error) {
+	stmt, err := db.Prepare("INSERT INTO users(name, email, password) VALUES(?,?,?)")
+	_, err = stmt.Exec(user.Name, user.Email, user.Password)
+	return true, err
+}
+
+// GetUserByEmail returns a user from database using a email as parameter
+func GetUserByEmail(email string) (models.User, error) {
+	result, err := db.Query("SELECT * FROM users WHERE email = ?", email)
+	var user models.User
+	for result.Next() {
+		err = result.Scan(&user.ID, &user.Name, &user.Email, &user.Password)
+	}
+	return user, err
 }

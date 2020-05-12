@@ -15,7 +15,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		panic(err.Error())
 	}
 
-	result := lib.CreateUser(body)
+	result, err := lib.CreateUser(body)
 	if result != true {
 		w.Header().Set("Content-Type", "application/json")
 		w.WriteHeader(http.StatusInternalServerError)
@@ -25,4 +25,18 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 		io.WriteString(w, `{ "success": true, "message": "User created" }`)
 	}
+}
+
+// AuthenticateUser validates the request into database and authenticate it if is valid
+func AuthenticateUser(w http.ResponseWriter, r *http.Request) {
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	result := lib.AuthenticateUser(body)
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	io.WriteString(w, `{ "success": true, "token":"`+result+`"}`)
 }

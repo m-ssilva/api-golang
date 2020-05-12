@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -13,5 +14,7 @@ func main() {
 	router := mux.NewRouter()
 
 	router.HandleFunc("/register", services.CreateUser).Methods("POST")
-	http.ListenAndServe(":8000", router)
+	router.HandleFunc("/login", services.AuthenticateUser).Methods("POST")
+	log.Println("Listening on port 3000")
+	http.ListenAndServe(":3000", router)
 }
