@@ -12,7 +12,7 @@ import (
 )
 
 // CreateUser parse body information into user model and call repository layer
-func CreateUser(body []byte) (bool, error) {
+func CreateUser(body []byte) error {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
@@ -22,7 +22,13 @@ func CreateUser(body []byte) (bool, error) {
 		Password: keyVal["password"],
 	}
 
-	return repositories.CreateUser(user)
+	err := repositories.CreateUser(user)
+
+	if err != nil {
+		return errors.New("EMAIL_ALREADY_IN_USE")
+	}
+
+	return err
 }
 
 // GetUserByEmail returns user from database using email as parameter
@@ -42,7 +48,7 @@ func signToken(password string, userDB models.User) (string, error) {
 }
 
 // AuthenticateUser parse body information and returns a token if information is valid
-func AuthenticateUser(body []byte) string {
+func AuthenticateUser(body []byte) (string, error) {
 	keyVal := make(map[string]string)
 	json.Unmarshal(body, &keyVal)
 
@@ -50,8 +56,9 @@ func AuthenticateUser(body []byte) string {
 	password := keyVal["password"]
 
 	userDB, err := GetUserByEmail(email)
-	if err != nil {
-		panic(errors.New("ERROR_GET_USER_BY_EMAIL").Error())
+	if userDB.ID == 0 {
+		err = errors.New("EMAIL_NOT_REGISTERED")
+		return "", err
 	}
 
 	tokenString, err := signToken(password, userDB)
@@ -59,5 +66,5 @@ func AuthenticateUser(body []byte) string {
 		panic(errors.New("ERROR_SIGNING_TOKEN").Error())
 	}
 
-	return tokenString
+	return tokenString, err
 }

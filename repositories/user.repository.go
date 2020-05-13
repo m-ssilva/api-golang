@@ -8,10 +8,10 @@ import (
 var db = dbConn.CreateDatabaseConnection()
 
 // CreateUser inserts a new user into database
-func CreateUser(user models.User) (bool, error) {
+func CreateUser(user models.User) error {
 	stmt, err := db.Prepare("INSERT INTO users(name, email, password) VALUES(?,?,?)")
 	_, err = stmt.Exec(user.Name, user.Email, user.Password)
-	return true, err
+	return err
 }
 
 // GetUserByEmail returns a user from database using a email as parameter

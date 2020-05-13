@@ -1,0 +1,30 @@
+[
+  {
+    "name": "DEFAULT",
+    "status": 500,
+    "body": {
+      "message": "Ocorreu um erro inesperado"
+    }
+  },
+  {
+    "name": "INCORRECT_EMAIL_OR_PASSWORD",
+    "status": 401,
+    "body": {
+      "message": "Email ou senha incorretos"
+    }
+  },
+  {
+    "name": "EMAIL_NOT_REGISTERED",
+    "status": 400,
+    "body": {
+      "message": "Esse email não pertence a nenhuma conta"
+    }
+  },
+  {
+    "name": "EMAIL_ALREADY_IN_USE",
+    "status": 400,
+    "body": {
+      "message": "Esse email já está sendo usado"
+    }
+  }
+]
